@@ -7,7 +7,7 @@ main {
 
 button {
   font-size: 14px;
-  padding: 6px;
+  padding: 10px;
 }
 
 main {
@@ -21,8 +21,9 @@ main {
 
 form {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: end;
 }
 
 form section {

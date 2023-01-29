@@ -1,11 +1,12 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useRef } from 'react';
 import { TimeWithSkippedStops } from '../../entities/common';
+import { TimeListProps } from './TimeList';
 
-interface Props {
+interface Props extends TimeListProps {
   time: TimeWithSkippedStops;
 }
 
-export const TimeItem: FC<Props> = ({ time }) => {
+export const TimeItem: FC<Props> = ({ time, inputAreaType, inputRoute, inputSchedule }) => {
   const [departureTime, { skips, isRelevant }] = Object.entries(time)[0];
   const dialog = useRef<HTMLDialogElement>(null);
 
@@ -27,6 +28,9 @@ export const TimeItem: FC<Props> = ({ time }) => {
     }
   };
 
+  const title = `Шаттл ${inputRoute} ${inputAreaType}`;
+  const subtitle = `Отправление в ${departureTime} (${new Date().toLocaleDateString()})`;
+
   return (
     <>
       <button type="button" className={isRelevant ? 'isRelevant' : ''} onClick={openDialog}>{`${departureTime} ${
@@ -34,7 +38,10 @@ export const TimeItem: FC<Props> = ({ time }) => {
       }`}</button>
       <dialog id="dialog" ref={dialog} onClick={handleDialogClick}>
         <section>
-          <h2>{`Шаттл в ${departureTime}`}</h2>
+          <h2>{title}</h2>
+          <p>
+            <small>{subtitle}</small>
+          </p>
           {Boolean(skips?.length) && <p>💨 - шаттл не останавливается на остановках: {skips?.map(({ title }) => title).join(', ')}</p>}
           <button onClick={closeDialog}>ОК</button>
         </section>

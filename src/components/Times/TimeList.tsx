@@ -1,19 +1,18 @@
 import { FC } from 'react';
 import { timetables } from '../../data/timetables';
-import { AreaTypes, RouteTypes, ScheduleTypes, StopEntity, StopsEntity, TimeWithSkippedStops } from '../../entities/common';
+import { AreaTypes, RouteTypes, ScheduleTypes, StopEntity, TimeWithSkippedStops } from '../../entities/common';
 import { calculateRelevantTimes } from '../../utils/calculateRelevantTimes';
 import { TimeItem } from './TimeItem';
 
 import './Times.css';
 
-interface Props {
+export interface TimeListProps {
   inputAreaType: AreaTypes;
   inputRoute: RouteTypes;
   inputSchedule: ScheduleTypes;
-  filterRelevant: boolean;
 }
 
-export const TimeList: FC<Props> = ({ inputAreaType, inputRoute, inputSchedule, filterRelevant }) => {
+export const TimeList: FC<TimeListProps> = ({ inputAreaType, inputRoute, inputSchedule }) => {
   const schedule: Array<{
     departureStop: StopEntity;
     times: TimeWithSkippedStops[] | undefined;
@@ -30,15 +29,22 @@ export const TimeList: FC<Props> = ({ inputAreaType, inputRoute, inputSchedule, 
     <dl className="times">
       {schedule?.map(({ departureStop, times }) => {
         calculateRelevantTimes(new Date(), times);
-        const visibleTimes = !filterRelevant ? times : times?.filter((tableTime) => Object.entries(tableTime)[0][1].isRelevant);
 
         return (
           <div className="scheduleItem" key={departureStop.title}>
             <dt>{departureStop.title}</dt>
             <dd>
-              {visibleTimes?.map((time) => {
+              {times?.map((time) => {
                 const [departureTime] = Object.entries(time)[0];
-                return <TimeItem key={departureTime} time={time} />;
+                return (
+                  <TimeItem
+                    key={departureTime}
+                    time={time}
+                    inputAreaType={inputAreaType}
+                    inputRoute={inputRoute}
+                    inputSchedule={inputSchedule}
+                  />
+                );
               })}
             </dd>
           </div>

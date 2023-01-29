@@ -9,8 +9,8 @@ export enum AreaTypes {
 }
 
 export enum ScheduleTypes {
-  Regular = 'будние',
-  DayOff = 'выходные',
+  Regular = 'пн-пт',
+  DayOff = 'сб-вс',
 }
 
 export interface StopEntity {
