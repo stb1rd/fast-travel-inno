@@ -32,3 +32,9 @@ dialog {
 dialog section {
   padding: 20px;
 }
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
